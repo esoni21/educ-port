@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects | Emer Son Santiago</title>
+  <style>
+    :root {
+      --navy: #0B2D72;
+      --cobalt: #0992C2;
+      --sky: #0AC4E0;
+      --cream: #F6E7BC;
+      --white: #ffffff;
+      --dark: #061a46;
+      --text-light: #e8f4f8;
+      --shadow: rgba(11, 45, 114, 0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', 'Segoe UI', sans-serif;
+      background: var(--dark);
+      color: var(--text-light);
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ─────────────────────────────────── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 60px;
+      background: rgba(6,26,70,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(10,196,224,0.1);
+    }
+    .topbar-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--sky); text-decoration: none; letter-spacing: .12em;
+    }
+    .topbar-nav { list-style: none; display: flex; gap: 2rem; }
+    .topbar-nav a {
+      font-size: .85rem; color: rgba(232,244,248,.6);
+      text-decoration: none; transition: color .2s;
+    }
+    .topbar-nav a:hover, .topbar-nav a.active { color: var(--cream); }
+    .btn-logout {
+      padding: .3rem .9rem;
+      border: 1px solid rgba(10,196,224,.25);
+      border-radius: 100px;
+      color: rgba(10,196,224,.8) !important;
+    }
+
+    /* ── PAGE ───────────────────────────────────── */
+    .page-wrapper { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+    .section { padding: 4rem 0 6rem; }
+
+    .section-tag {
+      display: inline-block;
+      padding: .25rem .85rem;
+      background: rgba(10,196,224,.1);
+      border: 1px solid rgba(10,196,224,.2);
+      border-radius: 100px;
+      font-size: .78rem; letter-spacing: .08em; color: var(--sky);
+      margin-bottom: 1.2rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--cream); margin-bottom: .8rem;
+    }
+    .section-sub {
+      font-size: .95rem; line-height: 1.75;
+      color: rgba(232,244,248,.5);
+      max-width: 640px; margin-bottom: 3rem;
+    }
+
+    /* ── FILTER BAR ─────────────────────────────── */
+    .filter-bar {
+      display: flex; gap: .5rem; flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .filter-btn {
+      padding: .45rem 1.1rem;
+      background: transparent;
+      border: 1px solid rgba(10,196,224,.18);
+      border-radius: 100px;
+      color: rgba(232,244,248,.55);
+      font-family: 'DM Sans', sans-serif; font-size: .82rem;
+      cursor: pointer; transition: all .2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(9,146,194,.15);
+      border-color: var(--cobalt);
+      color: var(--cream);
+    }
+
+    /* ── PROJECT CARDS ──────────────────────────── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+    .project-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(10,196,224,.12);
+      border-radius: 18px; overflow: hidden;
+      transition: all .3s; display: flex; flex-direction: column;
+    }
+    .project-card:hover {
+      border-color: rgba(10,196,224,.3);
+      transform: translateY(-5px);
+    }
+    .project-thumb {
+      height: 180px;
+      background: linear-gradient(135deg,rgba(9,146,194,.15),rgba(10,196,224,.08));
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; font-size: 3.5rem;
+    }
+    .project-thumb::after {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(6,26,70,.6) 100%);
+    }
+    .project-badge {
+      position:absolute; top:1rem; right:1rem;
+      padding:.25rem .7rem; border-radius:100px;
+      font-size:.72rem; font-weight:500; z-index:1;
+    }
+    .badge-html { background:rgba(10,196,224,.2);  color:var(--sky);  border:1px solid rgba(10,196,224,.3); }
+    .badge-js   { background:rgba(246,231,188,.15); color:var(--cream);border:1px solid rgba(246,231,188,.25);}
+    .badge-php  { background:rgba(9,146,194,.2);   color:#60c8f0;     border:1px solid rgba(9,146,194,.3); }
+    .badge-full { background:rgba(11,45,114,.5);   color:#a0cfe8;     border:1px solid rgba(10,196,224,.2); }
+
+    .project-body { padding:1.5rem; flex:1; display:flex; flex-direction:column; }
+    .project-body h3 {
+      font-family:'Playfair Display',Georgia,serif;
+      font-size:1.15rem; color:var(--cream); margin-bottom:.6rem;
+    }
+    .project-body p { font-size:.87rem; line-height:1.7; color:rgba(232,244,248,.5); flex:1; }
+    .project-tags { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:1.25rem; }
+    .tag {
+      padding:.2rem .6rem;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:6px; font-size:.75rem; color:rgba(232,244,248,.45);
+    }
+    .project-footer {
+      padding:1rem 1.5rem;
+      border-top:1px solid rgba(10,196,224,.08);
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .project-footer a {
+      font-size:.82rem; color:var(--sky); text-decoration:none;
+      display:flex; align-items:center; gap:.35rem; transition:gap .2s,color .2s;
+    }
+    .project-footer a:hover { gap:.6rem; color:var(--cream); }
+    .project-status { font-size:.75rem; display:flex; align-items:center; gap:.35rem; color:rgba(232,244,248,.35); }
+    .status-dot { width:6px; height:6px; border-radius:50%; background:#2dcc70; }
+
+    /* ── GALLERY SECTION ────────────────────────── */
+    .gallery-section { margin-top: 5rem; padding-top: 5rem; border-top: 1px solid rgba(10,196,224,.1); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    /* each container */
+    .gallery-container {
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(10,196,224,.12);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .gallery-container:hover {
+      border-color: rgba(10,196,224,.32);
+      transform: translateY(-4px);
+    }
+
+    .gallery-header {
+      padding: .9rem 1.2rem .7rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(10,196,224,.08);
+    }
+    .gallery-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem; color: var(--cream);
+    }
+    .gallery-counter {
+      font-size: .75rem; color: var(--sky);
+      background: rgba(10,196,224,.1);
+      padding: .15rem .55rem; border-radius: 100px;
+      border: 1px solid rgba(10,196,224,.2);
+    }
+
+    /* slideshow area */
+    .slide-area {
+      position: relative;
+      width: 100%; height: 200px;
+      overflow: hidden; cursor: pointer;
+      background: rgba(9,146,194,.07);
+    }
+    .slide-area img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity .5s ease;
+      pointer-events: none;
+      user-select: none;
+    }
+    .slide-area img.active { opacity: 1; }
+
+    /* expand icon overlay */
+    .expand-hint {
+      position: absolute; bottom: .6rem; right: .7rem; z-index: 2;
+      background: rgba(6,26,70,.75);
+      border: 1px solid rgba(10,196,224,.3);
+      border-radius: 8px;
+      padding: .28rem .55rem;
+      font-size: .72rem; color: var(--sky);
+      display: flex; align-items: center; gap: .3rem;
+      opacity: 0; transition: opacity .25s;
+      pointer-events: none;
+    }
+    .slide-area:hover .expand-hint { opacity: 1; }
+    .expand-icon {
+      width: 13px; height: 13px;
+      stroke: var(--sky); fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    /* placeholder when no image loaded yet */
+    .slide-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: .5rem;
+    }
+    .placeholder-icon {
+      width: 36px; height: 36px;
+      stroke: rgba(10,196,224,.3); fill: none;
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .placeholder-label {
+      font-size: .78rem; color: rgba(10,196,224,.35);
+    }
+
+    /* dots + arrows */
+    .slide-controls {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .6rem 1rem;
+      border-top: 1px solid rgba(10,196,224,.07);
+    }
+    .slide-arrow {
+      background: transparent;
+      border: 1px solid rgba(10,196,224,.18);
+      border-radius: 50%;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--sky);
+      font-size: .85rem; transition: all .2s;
+      line-height: 1;
+    }
+    .slide-arrow:hover {
+      background: rgba(9,146,194,.2);
+      border-color: var(--cobalt);
+      color: var(--cream);
+    }
+    .slide-dots { display: flex; gap: 5px; align-items: center; }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(10,196,224,.2);
+      border: 1px solid rgba(10,196,224,.25);
+      cursor: pointer; transition: all .25s;
+    }
+    .dot.active {
+      background: var(--sky);
+      border-color: var(--sky);
+      transform: scale(1.3);
+    }
+
+    /* gallery label/description footer */
+    .gallery-desc {
+      padding: .55rem 1.2rem .85rem;
+      font-size: .8rem; color: rgba(232,244,248,.4);
+      line-height: 1.5;
+    }
+
+    /* ── LIGHTBOX ───────────────────────────────── */
+    #lightbox {
+      display: none;
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(4,12,34,.92);
+      backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+      flex-direction: column;
+    }
+    #lightbox.open { display: flex; }
+
+    #lightbox-img {
+      max-width: min(90vw, 1100px);
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 12px;
+      border: 1px solid rgba(10,196,224,.2);
+      box-shadow: 0 0 60px rgba(10,196,224,.07);
+    }
+
+    .lb-info {
+      margin-top: 1rem; text-align: center;
+      font-size: .85rem; color: rgba(232,244,248,.5);
+    }
+    .lb-info strong { color: var(--cream); }
+
+    .lb-close {
+      position: absolute; top: 1.25rem; right: 1.5rem;
+      background: rgba(10,196,224,.1);
+      border: 1px solid rgba(10,196,224,.25);
+      border-radius: 50%; width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--sky); font-size: 1.2rem;
+      transition: all .2s;
+    }
+    .lb-close:hover { background: rgba(10,196,224,.2); color: var(--cream); }
+
+    .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(10,196,224,.1);
+      border: 1px solid rgba(10,196,224,.2);
+      border-radius: 50%;
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--sky); font-size: 1.3rem;
+      transition: all .2s;
+    }
+    .lb-nav:hover { background: rgba(10,196,224,.2); color: var(--cream); }
+    #lb-prev { left: 1.5rem; }
+    #lb-next { right: 1.5rem; }
+
+    /* ── VIDEO SECTION ──────────────────────────── */
+    .demo-section { margin-top: 5rem; padding-top: 5rem; border-top: 1px solid rgba(10,196,224,.1); }
+    .video-outer {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.5rem;
+    }
+    .video-box {
+      width: 100%;
+      max-width: 860px;
+      background: rgba(11,45,114,0.35);
+      border: 1.5px solid rgba(10,196,224,0.25);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 0 0 6px rgba(10,196,224,0.05), 0 24px 60px rgba(6,26,70,0.5);
+    }
+    .video-box-header {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .85rem 1.4rem;
+      border-bottom: 1px solid rgba(10,196,224,0.12);
+      background: rgba(9,146,194,0.08);
+    }
+    .vb-dot {
+      width: 11px; height: 11px; border-radius: 50%;
+    }
+    .vb-dot:nth-child(1) { background: #ff5f57; }
+    .vb-dot:nth-child(2) { background: #febc2e; }
+    .vb-dot:nth-child(3) { background: #28c840; }
+    .vb-title {
+      font-size: .8rem;
+      color: rgba(232,244,248,.4);
+      margin-left: auto;
+      margin-right: auto;
+      letter-spacing: .05em;
+    }
+    .video-box video {
+      width: 100%;
+      max-height: 540px;
+      object-fit: contain;
+      display: block;
+      background: #020c1e;
+    }
+    .video-box-footer {
+      padding: .7rem 1.4rem;
+      border-top: 1px solid rgba(10,196,224,0.1);
+      background: rgba(9,146,194,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      font-size: .78rem;
+      color: rgba(10,196,224,.5);
+    }
+    .vb-dot-small {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #2dcc70;
+      display: inline-block;
+    }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      font-size: .82rem;
+      color: rgba(232,244,248,.3);
+      border-top: 1px solid rgba(10,196,224,.07);
+    }
+    footer span { color: var(--sky); }
+
+    @media (max-width: 640px) {
+      .topbar { padding: 0 1rem; }
+      .page-wrapper { padding: 0 1rem; }
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+    <!-- ══════════════════════════════════════════
+         GALLERY SECTION — 13 containers × 5 slides
+    ══════════════════════════════════════════════ -->
+    <div class="gallery-section">
+      <h2 class="section-title">Project Previews</h2>
+      <p class="section-sub">
+        Browse screenshots from each project. Click any image to expand it in full view.
+        Use the arrows or dots to navigate between slides.
+      </p>
+
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+
+    <!-- VIDEO DEMO -->
+    <div class="demo-section">
+      <span class="section-tag">Demo Reel</span>
+      <h2 class="section-title">See It in Action</h2>
+      <p class="section-sub">
+        Watch a short walkthrough of one of my featured projects, demonstrating core features and design decisions.
+      </p>
+      <div class="video-outer">
+        <div class="video-box">
+          <div class="video-box-header">
+            <span class="vb-dot"></span>
+            <span class="vb-dot"></span>
+            <span class="vb-dot"></span>
+            <span class="vb-title">demo.mp4 — Project Walkthrough</span>
+          </div>
+          <video controls>
+            <source src="demo.mp4" type="video/mp4">
+            Your browser does not support the video element.
+          </video>
+          <div class="video-box-footer">
+            <span class="vb-dot-small"></span>
+            Featured Project Demo · BSIT Portfolio
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <span>Emer Son Santiago</span> · BSIT Portfolio · OLSHCO-Guimba</p>
+</footer>
+
+<!-- ── LIGHTBOX ──────────────────────────────────── -->
+<div id="lightbox">
+  <button class="lb-close" id="lb-close" aria-label="Close">&#215;</button>
+  <button class="lb-nav" id="lb-prev" aria-label="Previous">&#8249;</button>
+  <img id="lightbox-img" src="" alt="Expanded project screenshot">
+  <div class="lb-info" id="lb-info"></div>
+  <button class="lb-nav" id="lb-next" aria-label="Next">&#8250;</button>
+</div>
+
+
+<script src="script.js"></script>
+<script>
+/* ─── Gallery Data ──────────────────────────────────────────────────────────
+   Replace the src arrays with your actual image paths.
+   Each gallery has exactly 5 slides.
+───────────────────────────────────────────────────────────────────────────── */
+const galleries = [
+  {
+    title: "Persona Things",
+    desc: "",
+    slides: [
+      { src: "images/persona01.png", alt: "Persona" },
+      { src: "images/persona02.png", alt: "Persona" },
+    ]
+  },
+  {
+    title: "my_plainstatic_page",
+    desc: "",
+    slides: [
+      { src: "images/static01.png", alt: "static" },
+
+    ]
+  },
+  {
+    title: "Design and Develop Educational Portfolio Website",
+    desc: "",
+    slides: [
+      { src: "images/dd1.png", alt: "depw" },
+      { src: "images/dd2.png", alt: "depw" },
+      { src: "images/dd3.png", alt: "depw" },
+      { src: "images/dd4.png", alt: "depw" },
+      { src: "images/dd5.png", alt: "depw" },
+    ]
+  },
+  {
+    title: "my_enhanstatic_page",
+    desc: "",
+    slides: [
+      { src: "images/en01.png", alt: "M_E_P" },
+      { src: "images/en02.png", alt: "M_E_P" },
+    ]
+  },
+  {
+    title: "My Home & Story",
+    desc: "",
+    slides: [
+      { src: "images/hs01.png", alt: "My Home & Story" },
+      { src: "images/hs02.png", alt: "My Home & Story" },
+      { src: "images/hs03.png", alt: "My Home & Story" },
+      { src: "images/hs04.png", alt: "My Home & Story" },
+
+    ]
+  },
+  {
+    title: "User-Centered Educational Portfolio Website",
+    desc: "",
+    slides: [
+      { src: "images/ed01.png", alt: "User-Centered Educational Portfolio Website" },
+      { src: "images/ed02.png", alt: "User-Centered Educational Portfolio Website" },
+      { src: "images/ed03.png", alt: "User-Centered Educational Portfolio Website" },
+      { src: "images/ed04.png", alt: "User-Centered Educational Portfolio Website" },
+    ]
+  },
+  {
+    title: " Educational / Assistance Tool",
+    desc: "",
+    slides: [
+      { src: "images/quiz01.png", alt: " Educational / Assistance Tool" },
+      { src: "images/quiz02.png", alt: " Educational / Assistance Tool" },
+    ]
+  },
+  {
+    title: "Basic Login Page",
+    desc: "",
+    slides: [
+      { src: "images/login01.png", alt: "Basic Login Page" },
+    ]
+  },
+  {
+    title: "Enhanced Educational Portfolio Website",
+    desc: "",
+    slides: [
+      { src: "images/port01.png", alt: "Enhanced Educational Portfolio Website" },
+    ]
+  },
+  {
+    title: "Advanced Login Page + Registration Form",
+    desc: "",
+    slides: [
+      { src: "images/reg01.png", alt: "Advanced Login Page + Registration Form" },
+      { src: "images/reg02.png", alt: "Advanced Login Page + Registration Form" },  
+    ]
+  },
+  {
+    title: "Creating a Website Deployment Tutorial (FileZilla + XAMPP + PHP + Database)",
+    desc: "",
+    slides: [
+      { src: "images/unk01.png", alt: "Creating a Website Deployment Tutorial (FileZilla + XAMPP + PHP + Database)" },
+    ]
+  },
+  {
+    title: "TUT for Setting Up DNS & HTTPS/SSL & BackUp",
+    desc: "",
+    slides: [
+      { src: "images/unk01.png", alt: "TUT for Setting Up DNS & HTTPS/SSL & BackUp" },
+    ]
+  },
+  {
+    title: "Live Educational Portfolio Website",
+    desc: "",
+    slides: [
+      { src: "images/unk01.png", alt: "Live Educational Portfolio Website" },
+    ]
+  },
+];
+
+/* ─── Build Galleries ───────────────────────────────────────────────────── */
+const grid = document.getElementById('galleryGrid');
+
+galleries.forEach((gallery, gIdx) => {
+  const container = document.createElement('div');
+  container.className = 'gallery-container';
+
+  /* header */
+  container.innerHTML = `
+    <div class="gallery-header">
+      <span class="gallery-title">${gallery.title}</span>
+      <span class="gallery-counter" id="counter-${gIdx}">1 / ${gallery.slides.length}</span>
+    </div>`;
+
+  /* slide area */
+  const slideArea = document.createElement('div');
+  slideArea.className = 'slide-area';
+  slideArea.dataset.gallery = gIdx;
+  slideArea.dataset.current = '0';
+
+  /* placeholder (shown while images haven't loaded) */
+  slideArea.innerHTML = `
+    <div class="slide-placeholder">
+      <svg class="placeholder-icon" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21,15 16,10 5,21"/>
+      </svg>
+      <span class="placeholder-label">Add images to images/ folder</span>
+    </div>
+    <div class="expand-hint">
+      <svg class="expand-icon" viewBox="0 0 24 24">
+        <polyline points="15,3 21,3 21,9"/>
+        <polyline points="9,21 3,21 3,15"/>
+        <line x1="21" y1="3" x2="14" y2="10"/>
+        <line x1="3" y1="21" x2="10" y2="14"/>
+      </svg>
+      Expand
+    </div>`;
+
+  /* build img elements */
+  gallery.slides.forEach((slide, sIdx) => {
+    const img = document.createElement('img');
+    img.src = slide.src;
+    img.alt = slide.alt;
+    img.dataset.gallery = gIdx;
+    img.dataset.slide = sIdx;
+    if (sIdx === 0) img.classList.add('active');
+    slideArea.appendChild(img);
+  });
+
+  /* click on slide area → open lightbox */
+  slideArea.addEventListener('click', () => {
+    const current = parseInt(slideArea.dataset.current);
+    openLightbox(gIdx, current);
+  });
+
+  container.appendChild(slideArea);
+
+  /* controls */
+  const controls = document.createElement('div');
+  controls.className = 'slide-controls';
+
+  const prev = document.createElement('button');
+  prev.className = 'slide-arrow';
+  prev.innerHTML = '&#8249;';
+  prev.setAttribute('aria-label', 'Previous slide');
+  prev.addEventListener('click', e => { e.stopPropagation(); changeSlide(gIdx, -1); });
+
+  const dots = document.createElement('div');
+  dots.className = 'slide-dots';
+  dots.id = `dots-${gIdx}`;
+  gallery.slides.forEach((_, sIdx) => {
+    const dot = document.createElement('span');
+    dot.className = 'dot' + (sIdx === 0 ? ' active' : '');
+    dot.dataset.gallery = gIdx;
+    dot.dataset.slide = sIdx;
+    dot.addEventListener('click', e => { e.stopPropagation(); goToSlide(gIdx, sIdx); });
+    dots.appendChild(dot);
+  });
+
+  const next = document.createElement('button');
+  next.className = 'slide-arrow';
+  next.innerHTML = '&#8250;';
+  next.setAttribute('aria-label', 'Next slide');
+  next.addEventListener('click', e => { e.stopPropagation(); changeSlide(gIdx, 1); });
+
+  controls.appendChild(prev);
+  controls.appendChild(dots);
+  controls.appendChild(next);
+  container.appendChild(controls);
+
+  /* desc footer */
+  const desc = document.createElement('div');
+  desc.className = 'gallery-desc';
+  desc.textContent = gallery.desc;
+  container.appendChild(desc);
+
+  grid.appendChild(container);
+
+  /* auto-play */
+  setInterval(() => changeSlide(gIdx, 1), 4000 + gIdx * 300);
+});
+
+/* ─── Slide helpers ─────────────────────────────────────────────────────── */
+function goToSlide(gIdx, sIdx) {
+  const total = galleries[gIdx].slides.length;
+  sIdx = ((sIdx % total) + total) % total;
+
+  const area = document.querySelector(`.slide-area[data-gallery="${gIdx}"]`);
+  area.dataset.current = sIdx;
+
+  area.querySelectorAll('img').forEach((img, i) => {
+    img.classList.toggle('active', i === sIdx);
+  });
+
+  document.querySelectorAll(`#dots-${gIdx} .dot`).forEach((d, i) => {
+    d.classList.toggle('active', i === sIdx);
+  });
+
+  document.getElementById(`counter-${gIdx}`).textContent =
+    `${sIdx + 1} / ${total}`;
+}
+
+function changeSlide(gIdx, dir) {
+  const area = document.querySelector(`.slide-area[data-gallery="${gIdx}"]`);
+  const current = parseInt(area.dataset.current);
+  goToSlide(gIdx, current + dir);
+}
+
+/* ─── Lightbox ──────────────────────────────────────────────────────────── */
+let lb = { gIdx: 0, sIdx: 0 };
+
+function openLightbox(gIdx, sIdx) {
+  lb.gIdx = gIdx;
+  lb.sIdx = sIdx;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderLightbox() {
+  const slide = galleries[lb.gIdx].slides[lb.sIdx];
+  document.getElementById('lightbox-img').src = slide.src;
+  document.getElementById('lightbox-img').alt = slide.alt;
+  document.getElementById('lb-info').innerHTML =
+    `<strong>${galleries[lb.gIdx].title}</strong> &mdash; ${slide.alt} &nbsp;
+     <span style="color:rgba(232,244,248,.3)">(${lb.sIdx + 1} / ${galleries[lb.gIdx].slides.length})</span>`;
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.getElementById('lb-prev').addEventListener('click', () => {
+  const total = galleries[lb.gIdx].slides.length;
+  lb.sIdx = ((lb.sIdx - 1) + total) % total;
+  renderLightbox();
+});
+document.getElementById('lb-next').addEventListener('click', () => {
+  const total = galleries[lb.gIdx].slides.length;
+  lb.sIdx = (lb.sIdx + 1) % total;
+  renderLightbox();
+});
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft')  document.getElementById('lb-prev').click();
+  if (e.key === 'ArrowRight') document.getElementById('lb-next').click();
+});
+
+/* ─── Project filter ───────────────────────────────────────────────────── */
+function filterProjects(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
+  });
+}
+
+/* placeholder logoutUser so it doesn't throw */
+function logoutUser() { window.location.href = 'index.html'; }
+</script>
+</body>
+</html>

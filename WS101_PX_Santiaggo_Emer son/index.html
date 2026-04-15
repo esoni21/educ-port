@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | Emer Son Santiago</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .highlight-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(10,196,224,0.12);
+      border-radius: 16px;
+      padding: 2rem 1.75rem;
+      transition: all 0.3s;
+    }
+    .highlight-card:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(10,196,224,0.28);
+      transform: translateY(-4px);
+    }
+    .highlight-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(9,146,194,0.15);
+      border: 1px solid rgba(9,146,194,0.25);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+      font-size: 1.4rem;
+    }
+    .highlight-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--cream);
+      margin-bottom: 0.6rem;
+    }
+    .highlight-card p {
+      font-size: 0.88rem;
+      color: rgba(232,244,248,0.5);
+      line-height: 1.7;
+    }
+    .highlight-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.25rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--sky);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: gap 0.2s;
+    }
+    .highlight-link:hover { gap: 0.7rem; color: var(--cream); }
+    .audio-section {
+      margin-top: 4rem;
+      padding: 2.5rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(10,196,224,0.1);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    .audio-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--cream);
+      margin-bottom: 0.4rem;
+    }
+    .audio-info p {
+      font-size: 0.88rem;
+      color: rgba(232,244,248,0.45);
+      margin-bottom: 1.25rem;
+    }
+    audio { width: 100%; accent-color: var(--cobalt); }
+    .audio-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(9,146,194,0.15);
+      border: 1px solid rgba(9,146,194,0.3);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 2rem;
+    }
+    @media(max-width:768px){
+      .highlights-grid{grid-template-columns:1fr;}
+      .audio-section{flex-direction:column; gap:1.5rem;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="index.html" class="topbar-logo">Dashboard</a>
+  <ul class="topbar-nav">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="#" onclick="logoutUser()" class="btn-logout">Logout</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="section-hero">
+    <div class="dot-grid" style="inset:0; width:100%; height:100%;"></div>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <span class="hero-label">BSIT Student · Developer · Creator</span>
+        <h1 class="hero-name">
+          Emer Son
+          <span>Santiago</span>
+        </h1>
+        <p class="hero-desc">
+          Welcome to my educational portfolio — a curated showcase of my academic journey, 
+          coding projects, and passion for building meaningful digital experiences. 
+          I turn ideas into interfaces, and problems into solutions.
+        </p>
+        <div class="hero-cta">
+          <a href="projects.html" class="btn-primary">View Projects →</a>
+          <a href="contact.html" class="btn-outline">Get in Touch</a>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-num">4+</div>
+            <div class="stat-label">Projects Done</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">2nd</div>
+            <div class="stat-label">Year Level</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">BSIT</div>
+            <div class="stat-label">Degree Program</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="profile-frame">
+          <img src="profile.jpg" alt="Emer Son Santiago"
+               class="profile-img"
+               onerror="this.replaceWith(document.getElementById('prof-placeholder').content.cloneNode(true))">
+          <template id="prof-placeholder">
+            <div class="profile-placeholder">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                <circle cx="30" cy="22" r="12" stroke="#0AC4E0" stroke-width="1.5"/>
+                <path d="M8 52c0-12.15 9.85-22 22-22s22 9.85 22 22" stroke="#0AC4E0" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <p>profile.jpg</p>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- HIGHLIGHTS -->
+  <div class="section">
+    <span class="section-tag">Quick Look</span>
+    <h2 class="section-title">What You'll Find Here</h2>
+    <p class="section-sub">
+      Navigate through the different sections of my portfolio to learn more about 
+      who I am, what I've built, and how to reach me.
+    </p>
+
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <div class="highlight-icon">👤</div>
+        <h3>About Me</h3>
+        <p>Discover my background as a BSIT student at OLSHCO-Guimba, my interests in web development, UI/UX design, and the values that drive my academic journey.</p>
+        <a href="about.html" class="highlight-link">Read more →</a>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">💻</div>
+        <h3>My Projects</h3>
+        <p>A collection of academic and personal projects spanning HTML layouts, JavaScript applications, interactive quizzes, and full-featured web interfaces.</p>
+        <a href="projects.html" class="highlight-link">Browse projects →</a>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">✉️</div>
+        <h3>Contact</h3>
+        <p>Let's connect! Reach out via the contact form or find me through my organization, the Junior Philippine Computer Society at OLSHCO-Guimba.</p>
+        <a href="contact.html" class="highlight-link">Get in touch →</a>
+      </div>
+    </div>
+
+    <!-- AUDIO -->
+    <div class="audio-section">
+      <div class="audio-icon">🎵</div>
+      <div class="audio-info" style="flex:1;">
+        <h3>Portfolio Introduction</h3>
+        <p>Listen to a brief audio introduction about this portfolio and what it represents.</p>
+        <audio controls>
+          <source src="intro.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 <span>Emer Son Santiago</span> · BSIT Portfolio · OLSHCO-Guimba</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

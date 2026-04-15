@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Emer Son Santiago</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-photo-wrap {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    .about-photo-wrap::before {
+      content: '';
+      position: absolute;
+      top: 16px; left: 16px; right: -16px; bottom: -16px;
+      border: 1px solid rgba(10,196,224,0.2);
+      border-radius: 18px;
+    }
+    .about-photo {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+    .about-photo-placeholder {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: 16px;
+      background: rgba(9,146,194,0.1);
+      border: 1px solid rgba(10,196,224,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+      color: rgba(10,196,224,0.5);
+      font-size: 0.85rem;
+    }
+    .quick-facts {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(10,196,224,0.12);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    .quick-facts h4 {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 1.25rem;
+    }
+    .fact-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(10,196,224,0.07);
+      font-size: 0.88rem;
+    }
+    .fact-row:last-child { border-bottom: none; }
+    .fact-label { color: rgba(232,244,248,0.45); }
+    .fact-value { color: var(--cream); font-weight: 500; text-align: right; }
+
+    .bio-block {
+      margin-bottom: 2.5rem;
+    }
+    .bio-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+    .bio-block p {
+      font-size: 0.97rem;
+      line-height: 1.85;
+      color: rgba(232,244,248,0.6);
+      margin-bottom: 1rem;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .skill-name {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: rgba(232,244,248,0.65);
+    }
+    .skill-pct { color: var(--sky); font-weight: 500; }
+    .skill-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cobalt), var(--sky));
+      border-radius: 100px;
+      animation: fillBar 1.2s ease forwards;
+      transform-origin: left;
+    }
+    @keyframes fillBar { from { width: 0 !important; } }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .value-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(10,196,224,0.1);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .value-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+    .value-card h4 { font-size: 0.92rem; color: var(--cream); margin-bottom: 0.4rem; }
+    .value-card p { font-size: 0.82rem; color: rgba(232,244,248,0.45); line-height: 1.65; }
+
+    @media(max-width:900px){
+      .about-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .about-photo-wrap::before { display: none; }
+      .skills-grid, .values-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="index.html" class="topbar-logo">About</a>
+  <ul class="topbar-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="#" onclick="logoutUser()" class="btn-logout">Logout</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+  <div class="section">
+
+    <span class="section-tag">About Me</span>
+    <h1 class="section-title">The Person Behind the Portfolio</h1>
+    <p class="section-sub">
+      A curious mind, a driven student, and a developer-in-the-making — here's a closer look at who I am and what moves me.
+    </p>
+
+    <div class="about-layout">
+
+      <!-- SIDEBAR -->
+      <div class="about-sidebar">
+        <div class="about-photo-wrap">
+          <img src="profile.jpg" alt="Emer Son Santiago" class="about-photo"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div class="about-photo-placeholder" style="display:none;">
+            <svg width="56" height="56" viewBox="0 0 60 60" fill="none">
+              <circle cx="30" cy="22" r="12" stroke="#0AC4E0" stroke-width="1.5"/>
+              <path d="M8 52c0-12.15 9.85-22 22-22s22 9.85 22 22" stroke="#0AC4E0" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span>profile.jpg</span>
+          </div>
+        </div>
+
+        <div class="quick-facts">
+          <h4>Quick Facts</h4>
+          <div class="fact-row">
+            <span class="fact-label">Full Name</span>
+            <span class="fact-value">Emer Son Santiago</span>
+          </div>
+          <div class="fact-row">
+            <span class="fact-label">Program</span>
+            <span class="fact-value">BSIT</span>
+          </div>
+          <div class="fact-row">
+            <span class="fact-label">School</span>
+            <span class="fact-value">OLSHCO-Guimba</span>
+          </div>
+          <div class="fact-row">
+            <span class="fact-label">Organization</span>
+            <span class="fact-value">JPCS</span>
+          </div>
+          <div class="fact-row">
+            <span class="fact-label">Email</span>
+            <span class="fact-value" style="font-size:0.78rem;">emersonboholsantiago<br>@gmail.com</span>
+          </div>
+          <div class="fact-row">
+            <span class="fact-label">Phone</span>
+            <span class="fact-value">0965-210-0223</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div class="about-main">
+        <div class="bio-block">
+          <h3>Who I Am</h3>
+          <p>
+            Hi! I'm Emer Son Santiago, a passionate Bachelor of Science in Information Technology student 
+            at Our Lady of the Sacred Heart College of Ojcet – Guimba. I am deeply fascinated by the 
+            intersection of technology and human experience — specifically how thoughtful design and 
+            clean code can transform the way people interact with digital tools.
+          </p>
+          <p>
+            Growing up in an era of rapid digital transformation, I've always been captivated by how 
+            a few lines of code can power something truly meaningful. That curiosity turned into a calling, 
+            and now I spend my days learning, building, and improving one project at a time.
+          </p>
+        </div>
+
+        <div class="bio-block">
+          <h3>My Academic Journey</h3>
+          <p>
+            Currently pursuing my BSIT degree, my coursework spans across web development, object-oriented 
+            programming, database systems, networking fundamentals, and human-computer interaction. 
+            Every subject has added another layer to my understanding of what it means to build 
+            reliable, user-centric technology.
+          </p>
+          <p>
+            As a member of the Junior Philippine Computer Society (JPCS), I also engage with a 
+            community of like-minded peers who share a love for computing and innovation — attending 
+            seminars, participating in competitions, and collaborating on tech-driven initiatives.
+          </p>
+        </div>
+
+        <div class="bio-block">
+          <h3>Technical Skills</h3>
+          <div class="skills-grid">
+            <div class="skill-item">
+              <div class="skill-name"><span>HTML & CSS</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name"><span>JavaScript</span><span class="skill-pct">70%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name"><span>UI/UX Design</span><span class="skill-pct">65%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:65%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name"><span>PHP / Backend</span><span class="skill-pct">50%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:50%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name"><span>MySQL / Databases</span><span class="skill-pct">60%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:60%"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name"><span>Git & Version Control</span><span class="skill-pct">55%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="width:55%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bio-block">
+          <h3>My Core Values</h3>
+          <div class="values-grid">
+            <div class="value-card">
+              <div class="value-icon">🎯</div>
+              <h4>Intentionality</h4>
+              <p>I approach every project with purpose — understanding the "why" before writing a single line of code.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">📚</div>
+              <h4>Continuous Learning</h4>
+              <p>Technology evolves fast. I keep up by reading, experimenting, and staying curious every single day.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">🤝</div>
+              <h4>Collaboration</h4>
+              <p>The best products are built by great teams. I value open communication and constructive feedback.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">✨</div>
+              <h4>Attention to Detail</h4>
+              <p>Great user experiences come from caring about the small things — spacing, clarity, and consistency.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <span>Emer Son Santiago</span> · BSIT Portfolio · OLSHCO-Guimba</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

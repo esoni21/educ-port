@@ -92,7 +92,9 @@ function validateForm() {
   alert(`✅ Message sent! Thank you, ${name}. I'll get back to you soon.`);
   return false;
 }
-
+function showMessage() {
+    alert("Hello! Your portfolio is working!");
+}
 // ─── ACTIVE NAV ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   const current = window.location.pathname.split('/').pop() || 'index.html';
